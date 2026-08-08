@@ -108,9 +108,7 @@ def stream_chat(cfg, user_input):
         "stream": True,
         "chat_template_kwargs": {"enable_thinking": False},
     }
-    print(f"{C['yellow']}[ {cfg['model']} is thinking... first reply can take up to 2 min — wait for it ]{C['reset']}")
     collected = ""
-    first = True
     try:
         r = requests.post(url, headers=headers, json=payload,
                           stream=True, timeout=(15, 600))
@@ -132,9 +130,6 @@ def stream_chat(cfg, user_input):
             tok = delta.get("content")
             if not tok:
                 continue  # reasoning or metadata — skip silently
-            if first:
-                sys.stdout.write("\033[2K\r")  # clear the thinking line
-                first = False
             tok = fix_name(tok)
             sys.stdout.write(tok)
             sys.stdout.flush()
