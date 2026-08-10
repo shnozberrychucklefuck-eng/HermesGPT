@@ -26,7 +26,7 @@ except ImportError:
 
 CONFIG_FILE = "hermesgpt_config.json"
 PROMPT_FILE = "system-prompt.txt"
-SITE_URL = "https://github.com/hermesgpt/hermesgpt"
+SITE_URL = "https://github.com/codeclaudette-bot/HermesGPT"
 SITE_NAME = "HermesGPT"
 BASE_URL_DEFAULT = "http://127.0.0.1:8080/v1"
 MODEL_DEFAULT = "Claude Mythos"
