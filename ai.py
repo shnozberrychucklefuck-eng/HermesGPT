@@ -117,9 +117,11 @@ def banner(cfg):
             except Exception:
                 art = ""
         art = art or "HERMES-GPT"
-    for i, line in enumerate(art.split("\n")):
+    idx = 0
+    for line in art.split("\n"):
         if line.strip():
-            print(f"{FIRE[i % len(FIRE)]}{line}{C['reset']}")
+            print(f"{FIRE[idx % len(FIRE)]}{line}{C['reset']}")
+            idx += 1
         else:
             print()
     display_name = get_display_name(cfg)
