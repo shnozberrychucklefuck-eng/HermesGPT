@@ -225,9 +225,7 @@ def stream_chat(cfg, user_input):
 def chat_session(cfg):
     os.system("clear" if os.name == "posix" else "cls")
     banner(cfg)
-    display_name = get_display_name(cfg)
     print(f"{C['cyan']}[ Chat Session ]{C['reset']}")
-    print(f"{C['yellow']}Model: {C['green']}{display_name}{C['reset']}")
     print(f"{C['yellow']}Type 'menu' to return or 'exit' to quit{C['reset']}\n")
     while True:
         try:
