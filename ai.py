@@ -56,6 +56,10 @@ C = {
     "yellow": "\033[93m", "cyan": "\033[96m", "bold": "\033[1m",
 }
 
+# Fire ramp (top = hottest yellow, bottom = red) — one color per banner line
+FIRE = ["\033[38;5;226m", "\033[38;5;220m", "\033[38;5;214m",
+        "\033[38;5;208m", "\033[38;5;202m", "\033[38;5;196m"]
+
 
 def is_local_url(url):
     return any(h in url for h in ("localhost", "127.0.0.1", "0.0.0.0", "[::1]"))
@@ -109,11 +113,15 @@ def banner(cfg):
     if not art:
         if HAS_FIGLET:
             try:
-                art = pyfiglet.figlet_format("Hermes-GPT", font="big")
+                art = pyfiglet.figlet_format("Hermes-GPT", font="doom")
             except Exception:
                 art = ""
         art = art or "HERMES-GPT"
-    print(f"{C['red']}{art}{C['reset']}")
+    for i, line in enumerate(art.split("\n")):
+        if line.strip():
+            print(f"{FIRE[i % len(FIRE)]}{line}{C['reset']}")
+        else:
+            print()
     display_name = get_display_name(cfg)
     print(f"{C['yellow']}Hermes-GPT | {display_name} | {time.strftime('%Y-%m-%d %H:%M:%S')}{C['reset']}\n")
 
