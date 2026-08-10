@@ -26,7 +26,7 @@ except ImportError:
 
 CONFIG_FILE = "hermesgpt_config.json"
 PROMPT_FILE = "system-prompt.txt"
-SITE_URL = "https://github.com/codeclaudette-bot/HermesGPT"
+SITE_URL = "https://github.com/shnozberrychucklefuck-eng/HermesGPT"
 SITE_NAME = "HermesGPT"
 BASE_URL_DEFAULT = "http://127.0.0.1:8080/v1"
 MODEL_DEFAULT = "Claude Mythos"
@@ -126,6 +126,23 @@ def fix_name(text):
     return text
 
 
+def shorten_model_name(model):
+    """Derive a short, human-readable name from ANY model id."""
+    if not model:
+        return None
+    name = model.split("/")[-1]                            # drop provider prefix
+    name = re.sub(r":(free|floor|online)$", "", name)      # drop API suffixes
+    name = re.sub(r"-(it|instruct|chat|base)$", "", name)  # drop arch suffixes
+    name = re.sub(r"[_-]+", " ", name).strip()             # separators -> spaces
+    name = re.sub(r"(\d+)b\b", lambda m: m.group(1).upper() + "B",
+                  name, flags=re.IGNORECASE)               # 70b -> 70B (also a22b -> A22B)
+    ACRO = {"gpt": "GPT", "oss": "OSS", "api": "API", "ai": "AI", "ui": "UI"}
+    words = [ACRO.get(w.lower(), w[:1].upper() + w[1:]) for w in name.split(" ") if w]
+    name = " ".join(words)
+    if len(name) > 24:
+        name = name[:23].rstrip() + "..."
+    return name or None
+
 def get_display_name(cfg):
     """Get the proper display name for the current model."""
     # Check for HERMESGPT_NICK env var (set by w<name> launcher)
@@ -137,8 +154,8 @@ def get_display_name(cfg):
     for key, display in NICK_DISPLAY.items():
         if key in model:
             return display
-    # Default to config value
-    return cfg.get("model", MODEL_DEFAULT)
+    # Shorten ANY model id; last resort: show it as-is
+    return shorten_model_name(cfg.get("model", "")) or cfg.get("model", MODEL_DEFAULT)
 
 
 def stream_chat(cfg, user_input):
