@@ -57,8 +57,9 @@ C = {
 }
 
 # Fire ramp (top = hottest yellow, bottom = red) — one color per banner line
-FIRE = ["\033[38;5;226m", "\033[38;5;220m", "\033[38;5;214m",
-        "\033[38;5;208m", "\033[38;5;202m", "\033[38;5;196m"]
+FIRE = ["\033[38;5;226m", "\033[38;5;220m", "\033[38;5;214m", "\033[38;5;208m",
+        "\033[38;5;202m", "\033[38;5;196m", "\033[38;5;160m", "\033[38;5;124m",
+        "\033[38;5;88m"]
 
 
 def is_local_url(url):
@@ -113,7 +114,7 @@ def banner(cfg):
     if not art:
         if HAS_FIGLET:
             try:
-                art = pyfiglet.figlet_format("Hermes-GPT", font="doom")
+                art = pyfiglet.figlet_format("Hermes-GPT", font="ansi_shadow", width=200)
             except Exception:
                 art = ""
         art = art or "HERMES-GPT"
