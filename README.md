@@ -8,7 +8,7 @@ an editable persona (system-prompt.txt), and live output instead of a dead scree
 
 - Streaming replies — text appears as it generates (no more waiting in silence)
 - Local-first — works with llama.cpp on 127.0.0.1:8080, or any OpenAI-compatible API
-- Reasoning models supported — thinking is disabled via chat template kwargs
+- Reasoning models supported — thinking is disabled on local llama.cpp; cloud models keep their own reasoning
 - UTF-8 safe streaming — emojis survive the pipe
 - Editable banner — put your own ASCII art in `banner.txt`
 - Editable persona — `system-prompt.txt` is the system prompt, read fresh every message
@@ -47,6 +47,23 @@ on CPU — the thinking line tells you it's alive; wait for it.
 
 Set `base_url` to `https://openrouter.ai/api/v1`, add a real key, and pick a model
 from the menu (option 2). Free `:free` models work.
+
+## Any cloud model (OpenAI-compatible)
+
+Works with ANY OpenAI-compatible API — OpenRouter, Groq, NVIDIA NIM, Together,
+vLLM, Gemini's OpenAI-compat endpoint, etc. No file edits needed: environment
+variables override the config file, so one install talks to everything:
+
+    HERMESGPT_BASE_URL=https://openrouter.ai/api/v1
+    HERMESGPT_API_KEY=sk-or-...
+    HERMESGPT_MODEL=some/model-id
+
+    HERMESGPT_BASE_URL=... HERMESGPT_API_KEY=... HERMESGPT_MODEL=... python ai.py
+
+`HERMESGPT_LANGUAGE` (e.g. `Portuguese`) works too. Anything not set falls back
+to `hermesgpt_config.json`, then to the local llama.cpp defaults. The llama.cpp
+`chat_template_kwargs` knob is only sent to local servers — cloud APIs that
+reject unknown fields stay happy.
 
 ## Files
 
