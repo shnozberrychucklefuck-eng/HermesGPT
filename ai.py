@@ -166,10 +166,14 @@ def stream_chat(cfg, user_input):
         "X-Title": SITE_NAME,
         "Content-Type": "application/json",
     }
+    system = get_jailbreak_prompt()
+    lang = cfg.get("language")
+    if lang:
+        system += f"\n\nIMPORTANT: Always reply in {lang}."
     payload = {
         "model": cfg["model"],
         "messages": [
-            {"role": "system", "content": get_jailbreak_prompt()},
+            {"role": "system", "content": system},
             {"role": "user", "content": user_input},
         ],
         "max_tokens": 2000,
